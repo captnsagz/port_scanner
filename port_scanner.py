@@ -3,7 +3,7 @@ import sys
 import subprocess
 
 subprocess.call('clear', shell=True)
-sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+
 
 ip = sys.argv[1]
 print "-" * 60
