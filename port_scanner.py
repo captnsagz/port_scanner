@@ -3,7 +3,10 @@ import sys
 import subprocess
 
 subprocess.call('clear', shell=True)
-
+if len(sys.argv) < 2:
+	print "[!] Usage: the ip address is given as a commandline argument"
+	print "Ex: python port_scanner.py 'XXX.XXX.XX.X'" 
+	sys.exit(1)
 
 ip = sys.argv[1]
 print "-" * 60
