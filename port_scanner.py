@@ -1,24 +1,49 @@
-import socket
 import sys
 import subprocess
+import socket
 
-subprocess.call('clear', shell=True)
+
+subprocess.call("clear",shell="True")
 if len(sys.argv) < 2:
-	print "[!] Usage: the ip address is given as a commandline argument"
-	print "Ex: python port_scanner.py 'XXX.XXX.XX.X'" 
+	print "Usage: python <filename> <'ipaddr/hostname'> <'ports to scan'>"
 	sys.exit(1)
 
-ip = sys.argv[1]
-print "-" * 60
-print "Please wait, scanning remote host", ip
-print "-" * 60
-try:
-	for port in range(1,10000):
+
+
+host = sys.argv[1]
+ports = ""
+
+if ".com" in host or ".co" in host or ".in" in host or ".edu" in host:
+	host = socket.gethostbyname(host)
+
+print "-"*60
+print "Starting scan on: "+ host
+print "-"*60
+
+if len(sys.argv) > 2:
+	ports = sys.argv[2]
+	if "," in ports:
+		ports = ports.split(",")
+		for port in ports:
+			sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+			result = sock.connect_ex((host,int(port)))
+			if result == 0:
+            			print "[+] Port {}: 	 Open".format(port)
+        			sock.close()
+			else:
+				print "[+] Port {}: 	 Close".format(port)
+			sock.close()
+
+else:
+	for port in range(10000):
 		sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-		result = sock.connect_ex((ip,port))
+		result = sock.connect_ex((host,port))
 		if result == 0:
-			print "[+] Port {}:		 Open".format(port)
-		sock.close() 
-except socket.error:
-	print "[!] Unable to connect to remote host...." 
-print "[!] Scanning done.." 
+			print "[+] Port {}: 	 Open".format(port)
+			sock.close()
+		else:
+			print "[+] Port {}: 	 Close".format(port)
+		sock.close()
+	
+print "Done scanning host"+host+".........."
+	
