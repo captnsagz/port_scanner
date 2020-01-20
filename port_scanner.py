@@ -44,7 +44,8 @@ else:
 			try:
 				print "[Open] "+str(port)+"	"+socket.getservbyport(int(port),"tcp")
 			except socket.error as e:
-				print e
+				print "[Open] "+str(port)+" service name not found!!"
 		sock.close()
 print "-"*60
 print "Done scanning host: "+host+".........."
+	
