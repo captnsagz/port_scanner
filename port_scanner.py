@@ -32,9 +32,9 @@ if len(sys.argv) > 2:
             			try:
 					print "[Open] "+str(port)+"	"+socket.getservbyport(int(port),"tcp")
 				except socket.error as e:
-					print e
+					print "[Open] "+port+" service name not found!!"
 			else:
-				print "[!]"+port
+				print "[Closed] "+port
         		sock.close()
 else:
 	for port in range(10000):
