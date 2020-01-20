@@ -12,13 +12,14 @@ if len(sys.argv) < 2:
 
 host = sys.argv[1]
 ports = ""
-
-if ".com" in host or ".co" in host or ".in" in host or ".edu" in host:
+port_name = "tcp"
+if ".com" or ".in" or ".edu" or ".ng" in host:
 	host = socket.gethostbyname(host)
 
 print "-"*60
 print "Starting scan on: "+ host
 print "-"*60
+
 
 if len(sys.argv) > 2:
 	ports = sys.argv[2]
@@ -28,22 +29,22 @@ if len(sys.argv) > 2:
 			sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 			result = sock.connect_ex((host,int(port)))
 			if result == 0:
-            			print "[+] Port {}: 	 Open".format(port)
-        			sock.close()
+            			try:
+					print "[Open] "+str(port)+"	"+socket.getservbyport(int(port),"tcp")
+				except socket.error as e:
+					print e
 			else:
-				print "[+] Port {}: 	 Close".format(port)
-			sock.close()
-
+				print "[!]"+port
+        		sock.close()
 else:
 	for port in range(10000):
 		sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
 		result = sock.connect_ex((host,port))
 		if result == 0:
-			print "[+] Port {}: 	 Open".format(port)
-			sock.close()
-		else:
-			print "[+] Port {}: 	 Close".format(port)
+			try:
+				print "[Open] "+str(port)+"	"+socket.getservbyport(int(port),"tcp")
+			except socket.error as e:
+				print e
 		sock.close()
-	
-print "Done scanning host"+host+".........."
-	
+print "-"*60
+print "Done scanning host: "+host+".........."
